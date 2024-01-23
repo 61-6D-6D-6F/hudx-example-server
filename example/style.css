@@ -1,0 +1,219 @@
+html, body {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+}
+a, a:link, a:hover, a:active, a:visited {
+    color: #CE9178;
+    text-decoration: none;
+}
+header {
+    align-items: center;
+    background-color: #1e1e1e;
+    display: flex;
+    justify-content: center;
+    color: whitesmoke;
+}
+header > img {
+    margin: 0 10px 0 0;
+}
+header span {
+    padding: 10px;
+    margin-left: 20px;
+    font-weight: bold;
+    font-size: 16px;
+    color: steelblue;
+    cursor: pointer;
+}
+header span a, header span a:link, header span a:hover, header span a:active, header span a:visited {
+    color: steelblue;
+}
+nav {
+    position: absolute;
+    top: 148px;
+    left: 80px;
+    background-color: #1e1e1e;
+    padding: 20px 30px;
+}
+nav h3 {
+    text-align: center;
+}
+ol {
+    counter-reset: item;
+    padding-left: 20px;
+}
+li {
+    display: block;
+}
+li:before {
+    color: #CE9178;
+    content: counters(item, ".") ". ";
+    counter-increment: item;
+}
+main {
+    align-self: center;
+    width: 600px;
+}
+section {
+    margin-top: 80px;
+}
+section:first-child h2 {
+    text-align: center;
+}
+article {
+    margin-top: 40px;
+}
+div[hudx] {
+    background-color: grey;
+    cursor: pointer;
+    display: inline-flex;
+    padding: 10px;
+    user-select: none;
+}
+img {
+    display: block;
+    margin-top: 20px;
+}
+img + div {
+    margin-top: 20px;
+}
+footer {
+    background-color: #1e1e1e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    font-size: 20px;
+    margin-top: 80px;
+    color: whitesmoke;
+}
+footer > img {
+    margin: 0 10px 0 0;
+}
+.targetContainer {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 10px 0;
+}
+.targetArea {
+    align-items: flex-start;
+    background-color: lightgrey;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+}
+.requested {
+    background-color: #008038;
+}
+.error {
+    background-color: #E14040;
+}
+.yellowText {
+    color: #FFFF84;
+    font-weight: bold;
+}
+.greenBg {
+    background-color: #008038!important;
+}
+.loader {
+    width: 600px;
+    height: 598px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: lightgrey;
+}
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 10px solid grey;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin { 
+    100% { 
+        transform:rotate(360deg); 
+    } 
+}
+.hidden {
+    display: none;
+}
+.modal {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(25,25,25, 0.6);
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    opacity: 0;
+}
+.panel {
+    width: 300px;
+    height: 140px;
+    background-color: whitesmoke;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 20px;
+}
+.showModal {
+    animation: reveal 400ms ease forwards;
+}
+@keyframes reveal { 
+    0% {
+        opacity: 0;
+        visibility: visible;
+    }
+    100% { 
+        opacity: 1;
+        visibility: visible;
+    } 
+}
+.hideModal {
+    animation: hide 400ms ease forwards;
+}
+@keyframes hide { 
+    0% {
+        opacity: 1;
+        visibility: visible;
+    }
+    100% { 
+        opacity: 0;
+        visibility: hidden;
+    } 
+}
+.response {
+    background-color: #2D2D2D;
+    color: whitesmoke;
+    display: inline-flex;
+    font-weight: bold;
+    margin: 0;
+    padding: 10px;
+}
+.test {
+    color: whitesmoke;
+    font-weight: bold;
+    margin-left: 20px;
+    padding: 10px;
+}
+.passed {
+    background-color: #008038;
+}
+.failed {
+    background-color: #800000;
+}
+@media only screen and (max-width: 1600px) {
+  nav {
+    display: none;
+  }
+}

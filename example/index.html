@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hudx</title>
+    <link rel="icon" type="image/svg+xml" href="/img/favicon.svg">
+    <link rel="icon" type="image/png" href="/img/favicon.png">
+    <script src="/hudx.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <img alt="icon.png" src="/img/icon.png" width="30" height="30">
+        <h2>hudx <a href="https://htmx.org">- inspired by hmtx</a> </h2>
+        <span><a href="https://github.com/61-6D-6D-6F/hudx">github</a></span>
+        <span><a href="https://www.npmjs.com/package/hudx">npm</a></span>
+        <span id="cdn">cdn</span>
+        <script>
+            document.getElementById("cdn").addEventListener("click", function() {
+                navigator.clipboard.writeText("<script src=\"https://unpkg.com/hudx@0.0.1\" integrity=\"\" crossorigin=\"anonymous\"><\/script>");
+
+                alert("Cdn link copied! Paste it into the header of your html.");
+            });
+        </script>
+    </header>
+    <main>
+        <section>
+            <h2 id="hudx">hudx</h2>
+            <p>Control multiple ajax calls and style changes via html attributes in a cli like manner.</p>
+            <p>hudx is heavily inspired by <a href="https://htmx.org">htmx</a> and relies on the power of hypermedia. Htmx is awesome!!!</p>
+            <p>This small (200loc) package was created to add complex behaviour to a small widget for an existing website, which I was not able to achive easily with htmx.</p>
+            <p>Be warned: this is a toy project, not optimized for heavy interactions.</p>
+        </section>
+        <section>
+            <h2 id="insert">1. Insert response from the server:</h2>
+            <p><code>
+                hudx
+                <br>
+                hdx: 'event' 'method' 'url' 'target' 'position'
+                <br>
+                <br>
+                'event': click, load, focus, input,... <a href="https://www.w3schools.com/jsref/dom_obj_event.asp">full list</a>
+                <br>
+                'method': GET
+                <br>
+                'url': any url responding with html
+                <br>
+                'target': this, css ID selector
+                <br>
+                'position': outerHTML, innerHTML, beforebegin, beforeend, afterbegin, afterend
+            </code></p>
+            <article>
+                <h3 id="insert-single">1.1. Insert single element:</h3>
+                <p>Presss the update button.</p>
+                <div class="target">
+                    <div hudx hdx="click GET /response this outerHTML">
+                        Update
+                    </div>
+                </div>
+                <img alt="001.png" src="/img/001.png" width="600" height="203">
+            </article>
+            <article>
+                <h3 id="insert-multiple">1.2. Insert multiple elements:</h3>
+                <p>Hover and presss the update button.</p>
+                <div class="target">
+                    <div class="targetContainer">
+                        <div id="target2-1" class="targetArea">target 1</div>
+                        <div id="target2-2" class="targetArea">target 2</div>
+                        <div id="target2-3" class="targetArea">target 3</div>
+                    </div>
+                    <div hudx
+                        hdx-anyname="click GET /response #target2-1 outerHTML"
+                        hdx-othername="click GET /response2 #target2-2 innerHTML"
+                        hdx-anothername="mouseover GET /response3 #target2-3 beforebegin"
+                        >Update
+                    </div>
+                </div>
+                <img alt="002.png" src="/img/002.png" width="600" height="535">
+            </article>
+        </section>
+        <section>
+            <h2 id="delete">2. Delete elements from the page:</h2>
+            <p>Note that this action will only remove elements from the page wihtout posting anything to the server. If you want send data please read: <a href="#send">Send</a>. Required that the server responds with an empty body.</p>
+            <p><code>
+                hudx
+                <br>
+                hdx: 'event' 'method' 'url' 'target' 'position'
+                <br>
+                <br>
+                'event': click, load, focus, input,... <a href="https://www.w3schools.com/jsref/dom_obj_event.asp">full list</a>
+                <br>
+                'method': GET
+                <br>
+                'url': any url responding with empty body
+                <br>
+                'target': this, css ID selector
+                <br>
+                'position': outerHTML, innerHTML
+            </code></p>
+            <article>
+                <h3 id="delete-elements">2.1. Delete elements:</h3>
+                <p>Presss the update button.</p>
+                <div class="target">
+                    <div class="targetContainer">
+                        <div id="target3-1" class="targetArea">target 1</div>
+                        <div id="target3-2" class="targetArea">target 2</div>
+                    </div>
+                    <div hudx
+                        hdx-anyname="click GET /no-response #target3-1 outerHTML"
+                        hdx-othername="click GET /no-response #target3-2 innerHTML"
+                        >Update
+                    </div>
+                </div>
+                <img alt="003.png" src="/img/003.png" width="600" height="344">
+            </article>
+        </section>
+        <section>
+            <h2 id="send">3. Send data to the server and insert the response:</h2>
+            <p>Data contains the name and value attributes of input tags within the form elements.</p>
+            <p><code>
+                hudx
+                <br>
+                hdx: 'event' 'method' 'url' 'target' 'position' 'form element 1' 'form element 2' ...
+                <br>
+                <br>
+                'event': click, load, focus, input,... <a href="https://www.w3schools.com/jsref/dom_obj_event.asp">full list</a>
+                <br>
+                'method': POST, PUT, DELETE,... <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods">full list</a>
+                <br>
+                'url': any url responding with html or empty body
+                <br>
+                'target': this, css ID selector
+                <br>
+                'position': outerHTML, innerHTML, beforebegin, beforeend, afterbegin, afterend
+                <br>
+                'form element': css ID selector of a form element
+            </code></p>
+            <article>
+                <h3 id="send-single">3.1. Send single form:</h3>
+                <p>Fill the form and presss the send button.</p>
+                <div class="target">
+                    <form id="myForm4">
+                        <label for="fullName">Full name:</label>
+                        <input type="text" name="fullName"/>
+                        <label for="email">Email:</label>
+                        <input type="text" name="email"/>
+                    </form>
+                    <div class="targetContainer">
+                        <div id="target4" class="targetArea">
+                            <span>Contacts:</span>
+                        </div>
+                    </div>
+                    <div hudx hdx="click POST /add-contact #target4 beforeend #myForm4">
+                        Send
+                    </div>
+                </div>
+                <img alt="004.png" src="/img/004.png" width="600" height="647">
+            </article>
+            <article>
+                <h3 id="send-multiple">3.2. Send multiple forms:</h3>
+                <p>Fill the forms and presss the send button.</p>
+                <div class="target">
+                    <div id="target5">
+                        <h4>Name:</h4>
+                        <form id="myForm5">
+                            <label for="firstName">First name:</label>
+                            <input type="text" name="firstName"/>
+                            <label for="lastName">Last name:</label>
+                            <input type="text" name="lastName"/>
+                        </form>
+                        <h4>Contact:</h4>
+                        <form id="myForm6">
+                            <label for="phoneNumber">Phone number:</label>
+                            <input type="text" name="phoneNumber"/>
+                            <label for="email">Email:</label>
+                            <input type="text" name="email"/>
+                        </form>
+                        <br>
+                        <div hudx hdx-name="click POST /add-customer #target5 outerHTML #myForm5 #myForm6">
+                            Send
+                        </div>
+                    </div>
+                </div>
+                <img alt="005.png" src="/img/005.png" width="600" height="646">
+            </article>
+        </section>
+        <section>
+            <h2 id="style-callbacks">4. Style callbacks for request/response:</h2>
+            <code>request initiated: hds-r<br>success received: hds-s<br>error received: hds-er<br>error on connection: hds-ec</code>
+            <p><code>
+                hudx
+                <br>
+                hdx: 'event' 'method' 'url' 'target' 'position' 'form element 1' 'form element 2' ...
+                <br>
+                <br>
+                'event': click, load, focus, input,... <a href="https://www.w3schools.com/jsref/dom_obj_event.asp">full list</a>
+                <br>
+                'method': GET, POST, PUT, DELETE,... <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods">full list</a>
+                <br>
+                'url': any url responding with html or empty body
+                <br>
+                'target': this, css ID selector
+                <br>
+                'position': outerHTML, innerHTML, beforebegin, beforeend, afterbegin, afterend
+                <br>
+                'form element': css ID selector of a form element
+                <br>
+                <br>
+                hds-r: 'targets' 'action' 'classname 1' 'classname 2' ...
+                <br>
+                hds-s: 'targets' 'action' 'classname 1' 'classname 2' ...
+                <br>
+                hds-er: 'targets' 'action' 'classname 1' 'classname 2' ...
+                <br>
+                hds-ec: 'targets' 'action' 'classname 1' 'classname 2' ...
+                <br>
+                <br>
+                'targets': css selector
+                <br>
+                'action': add, remove, toggle
+                <br>
+                'classname': name of a class
+            </code></p>
+            <article>
+                <h3 id="style-requested">4.1. Style elements on request initiated:</h3>
+                <p>Presss the update button.</p>
+                <div class="target">
+                    <div class="targetContainer">
+                        <div class="targetArea status-r">
+                            <span id="target7">request initiated</span>
+                        </div>
+                        <div class="targetArea status-r">
+                            <span>request initiated</span>
+                        </div>
+                        <div id="target6" class="targetArea status-r">
+                            <span>request initiated</span>
+                        </div>
+                        <div class="targetArea status-r2">
+                            <span>request initiated 2</span>
+                        </div>
+                    </div>
+                    <div hudx 
+                        hdx-anyname="click GET /response #target6 afterend"
+                        hds-r-anyname-one=".status-r add requested"
+                        hds-r-anyname-two="#target7 add yellowText"
+                        hdx-othername="click GET /response2 #target6 beforebegin"
+                        hds-r-othername=".status-r2 add requested"
+                        >Update
+                    </div>
+                </div>
+                <img alt="006.png" src="/img/006.png" width="600" height="901">
+            </article>
+            <article>
+                <h3 id="style-success">4.2. Style elements on success received:</h3>
+                <p>Presss the update button and wait for the slow response.</p>
+                <div class="target">
+                    <div class="targetContainer">
+                        <div class="targetArea status-s">
+                            <span id="target9">success received</span>
+                        </div>
+                        <div class="targetArea status-s">
+                            <span>success received</span>
+                        </div>
+                        <div id="target8" class="targetArea status-s">
+                            <span>success received</span>
+                        </div>
+                        <div class="targetArea status-s2">
+                            <span>success received 2</span>
+                        </div>
+                    </div>
+                    <div hudx 
+                        hdx-anyname="click GET /slow-response #target8 afterend"
+                        hds-s-anyname-one=".status-s add requested"
+                        hds-s-anyname-two="#target9 add yellowText"
+                        hdx-othername="click GET /slow-response2 #target8 beforebegin"
+                        hds-s-othername=".status-s2 add requested"
+                        >Update
+                    </div>
+                </div>
+                <img alt="007.png" src="/img/007.png" width="600" height="901">
+            </article>
+            <article>
+                <h3 id="style-error-received">4.3. Style elements on error received:</h3>
+                <p>Presss the update button and wait for the slow response.</p>
+                <div class="target">
+                    <div class="targetContainer">
+                        <div class="targetArea status-er">
+                            <span id="target11">error received</span>
+                        </div>
+                        <div class="targetArea status-er">
+                            <span>error received</span>
+                        </div>
+                        <div id="target10" class="targetArea status-er">
+                            <span>error received</span>
+                        </div>
+                        <div class="targetArea status-er2">
+                            <span>error received 2</span>
+                        </div>
+                    </div>
+                    <div hudx 
+                        hdx-anyname="click GET /not-found #target10 afterend"
+                        hds-er-anyname-one=".status-er add error"
+                        hds-er-anyname-two="#target11 add yellowText"
+                        hdx-othername="click GET /slow-not-found #target10 beforebegin"
+                        hds-er-othername=".status-er2 add error"
+                        >Update
+                    </div>
+                </div>
+                <img alt="008.png" src="/img/008.png" width="600" height="853">
+            </article>
+            <article>
+                <h3 id="style-error-connection">4.4. Style elements on connection error:</h3>
+                <p>Presss the update button.<br><small>Please note, the error here is simulated/faked, real connection error is not immediate.</small></p>
+                <div class="target">
+                    <div class="targetContainer">
+                        <div class="targetArea status-ec">
+                            <span id="target13">error on connection</span>
+                        </div>
+                        <div class="targetArea status-ec">
+                            <span>error on connection</span>
+                        </div>
+                        <div id="target12" class="targetArea status-ec">
+                            <span>error on connection</span>
+                        </div>
+                        <div class="targetArea status-ec2">
+                            <span>error on connection 2</span>
+                        </div>
+                    </div>
+                    <div hudx 
+                        hdx-anyname="click GET l:81 #target12 afterend"
+                        hds-ec-anyname-one=".status-ec add error"
+                        hds-ec-anyname-two="#target13 add yellowText"
+                        hdx-othername="click GET l:81 #target12 beforebegin"
+                        hds-ec-othername=".status-ec2 add error"
+                        >Update
+                    </div>
+                </div>
+                <img alt="009.png" src="/img/009.png" width="600" height="837">
+            </article>
+        </section>
+        <section>
+            <h2 id="style-dom">5. Style elements on DOM events:</h2>
+            <p><code>
+                hudx
+                <br>
+                hdsx: 'event' 'target' 'action' 'classname 1' 'classname 2' ...
+                <br>
+                <br>
+                'event': click, load, focus, input,... <a href="https://www.w3schools.com/jsref/dom_obj_event.asp">full list</a>
+                <br>
+                'target': this, css selector
+                <br>
+                'action': add, remove, toggle
+                <br>
+                'classname': name of a class
+            </code></p>
+            <article>
+                <h3 id="style-elements">5.1. Style elements:</h3>
+                <p>Presss the toggle button.</p>
+                <div class="target">
+                    <div class="targetContainer">
+                        <div class="targetArea toToggle">
+                            <span>hidden?</span>
+                        </div>
+                        <div id="mouseGreen" class="targetArea">
+                            <span>green on hover</span>
+                        </div>
+                        <div class="targetArea toToggle">
+                            <span>hidden?</span>
+                        </div>
+                        <div id="green" class="targetArea greenBg">
+                            <span>green box?</span>
+                        </div>
+                    </div>
+                    <div hudx 
+                        hdsx-anyname="click .toToggle toggle hidden"
+                        hdsx-othername="click #green toggle greenBg"
+                        hdsx-anothername="mouseover #mouseGreen add greenBg"
+                        hdsx-anyothername="mouseleave #mouseGreen remove greenBg"
+                        >Toggle
+                    </div>
+                </div>
+                <img alt="010.png" src="/img/010.png" width="600" height="806">
+            </article>
+        </section>
+        <section>
+            <h2 id="examples">6. More examples:</h2>
+            <article>
+                <h3 id="example-lazy-loading">6.1. Lazy loading image:</h3>
+                <p>Disable cache and refresh the page.<br><small>Image loading takes 2 seconds.</small></p>
+                <div class="target">
+                    <img hudx id="img" class="hidden"
+                        hdsx-img="load #img remove hidden" 
+                        hdsx-loader="load #loader add hidden" 
+                        alt="image.png" src="/image.png" width="600" height="598">
+                    <div id="loader" class="loader">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            </article>
+            <article>
+                <h3 id="example-edit-customer">6.2. Edit customer data:</h3>
+                <p>Press the edit button.</p>
+                <div class="target">
+                    <div id="target14">
+                        <label for="name"><b>Name:</b></label>
+                        <span>John James</span>
+                        <br>
+                        <label for="email"><b>Email:</b></label>
+                        <span>johnjames@email.com</span>
+                        <br>
+                        <br>
+                        <div hudx hdx="click GET /customer/1/edit #target14 outerHTML">
+                            Edit
+                        </div>
+                    </div>
+                </div>
+                <img alt="011.png" src="/img/011.png" width="600" height="804">
+            </article>
+            <article>
+                <h3 id="example-modal">6.3. Modal example:</h3>
+                <p>Press the open button.</p>
+                <div class="target">
+                    <div id="target15" class="modal"></div>
+                    <div hudx
+                        hdx="click GET /modal #target15 innerHTML"
+                        hds-s="#target15 remove hideModal"
+                        hds-s2="#target15 add showModal"
+                        >Open
+                    </div>
+                </div>
+                <img alt="012.png" src="/img/012.png" width="600" height="1439">
+            </article>
+        </section>
+    </main>
+    <nav>
+        <h3><a href="#hudx">hudx</a></h3>
+        <ol>
+            <li><a href="#insert">Insert response from the server</a>
+                <ol>
+                    <br>
+                    <li><a href="#insert-single">Insert single element</a></li>
+                    <br>
+                    <li><a href="#insert-multiple">Insert multiple elements</a></li>
+                    <br>
+                </ol>
+            </li>
+            <li><a href="#delete">Delete elements from the page</a>
+                <ol>
+                    <br>
+                    <li><a href="#delete-elements">Delete elements</a></li>
+                    <br>
+                </ol>
+            </li>
+            <li><a href="#send">Send data to the server and insert the response</a>
+                <ol>
+                    <br>
+                    <li><a href="#send-single">Send single form</a></li>
+                    <br>
+                    <li><a href="#send-multiple">Send multiple forms</a></li>
+                    <br>
+                </ol>
+            </li>
+            <li><a href="#style-callbacks">Style callbacks for request/response</a>
+                <ol>
+                    <br>
+                    <li><a href="#style-requested">Style elements on request initiated</a></li>
+                    <br>
+                    <li><a href="#style-success">Style elements on success received</a></li>
+                    <br>
+                    <li><a href="#style-error-received">Style elements on error received</a></li>
+                    <br>
+                    <li><a href="#style-error-connection">Style elements on connection error</a></li>
+                    <br>
+                </ol>
+            </li>
+            <li><a href="#style-dom">Style elements on DOM events</a>
+                <ol>
+                    <br>
+                    <li><a href="#style-elements">Style elements</a></li>
+                    <br>
+                </ol>
+            </li>
+            <li><a href="#examples">More examples</a>
+                <ol>
+                    <br>
+                    <li><a href="#example-lazy-loading">Lazy loading image</a></li>
+                    <br>
+                    <li><a href="#example-edit-customer">Edit customer data</a></li>
+                    <br>
+                    <li><a href="#example-modal">Modal example</a></li>
+                    <br>
+                </ol>
+            </li>
+        </ol>
+    </nav>
+    <footer>
+        <img alt="icon.png" src="/img/icon.png" width="30" height="30">
+        <span><b>hudx</b> - created by: <a href="https://github.com/61-6D-6D-6F">ammo</a></span>
+    </footer>
+</body>
+</html>
